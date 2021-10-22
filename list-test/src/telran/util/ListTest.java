@@ -38,9 +38,21 @@ String initialStrings[] = {"name1", "name2"};
 		assertEquals("name1", strings.get(0));
 		assertEquals(null, numbers.get(-1));
 		assertEquals(null, numbers.get(3));
-		
-
-
 	}
 
+	@Test
+	void testAddIndex() {
+		assertEquals(true, strings.add(0, "name3"));
+		assertEquals("name3", strings.get(0));		
+		assertEquals(false, strings.add(5, "name4"));
+		assertEquals(true, strings.add(3, "name4"));
+		assertEquals(false, strings.add(-1, "name4"));
+	}
+
+	@Test
+	void testRemove() {
+		assertEquals(10, numbers.remove(0));
+		assertEquals(2, numbers.size());
+		assertEquals(null, numbers.remove(4));
+	}
 }
