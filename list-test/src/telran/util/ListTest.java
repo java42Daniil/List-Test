@@ -47,12 +47,15 @@ String initialStrings[] = {"name1", "name2"};
 		assertEquals(false, strings.add(5, "name4"));
 		assertEquals(true, strings.add(3, "name4"));
 		assertEquals(false, strings.add(-1, "name4"));
+		//[YG] not enough. Let's say from your code you remove essential lines "arraycopy" and size++, then your test nevertheless will pass, however functionulity is incorrect
 	}
 
 	@Test
 	void testRemove() {
+		//YG run the following test ArrayInteger<Integer> arT = new Array<Integer>(1); arT.add(1); arT.remove(0); ... see what will be.
 		assertEquals(10, numbers.remove(0));
 		assertEquals(2, numbers.size());
 		assertEquals(null, numbers.remove(4));
+		//[YG] not enough. Let's say from your code you remove your lines of the loop "for" (lines 71-74 of ArrayList). That is, you do nothing (no remove). but test will pass
 	}
 }
