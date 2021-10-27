@@ -162,7 +162,10 @@ String initialStrings[] = {"name1", "name2"};
 		assertEquals(0, numbers.indexOf(new GreaterNumberPredicate(5)));
 		assertEquals(1, numbers.indexOf(new GreaterNumberPredicate(10)));
 		assertEquals(2, numbers.indexOf(new GreaterNumberPredicate(25)));
+		// V.R. The following test tests nothing
 		assertEquals(-1, numbers.indexOf(100));
+		// V.R. This test replaces the previous one.
+		assertEquals(-1, numbers.indexOf(new GreaterNumberPredicate(100)));
 	}
 	@Test
 	void lastindexOfPredicate() {
@@ -173,13 +176,17 @@ String initialStrings[] = {"name1", "name2"};
 		numbers.add(10);
 		numbers.add(10);
 		assertEquals(3, numbers.lastIndexOf(new GreaterNumberPredicate(25)));
+		// V.R. The following test tests nothing
 		assertEquals(-1, numbers.lastIndexOf(100));
+		// V.R. This test replaces the previous one.
+		assertEquals(-1, numbers.lastIndexOf(new GreaterNumberPredicate(100)));
 	}
 	@Test
 	void removeIfTest() {
 		Integer expected1[] = {10, 20};
 		Integer expected2[] = {10};
 		Integer expected3[] = {};
+		// V.R. greater, NOT grater!
 		Predicate<Integer> grater1= new GreaterNumberPredicate(22);
 		Predicate<Integer> grater2= new GreaterNumberPredicate(12);
 		Predicate<Integer> grater3= new GreaterNumberPredicate(5);
