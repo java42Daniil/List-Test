@@ -2,6 +2,7 @@ package telran.util;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.Arrays;
 import java.util.function.Predicate;
 
 import javax.management.modelmbean.ModelMBeanNotificationBroadcaster;
@@ -81,7 +82,7 @@ String initialStrings[] = {"name1", "name2"};
 		assertEquals(initialNumbers.length, numbers.size());
 	}
 	
-	@Test
+	//@Test
 	void testContainsNumbers() {
 		assertTrue(numbers.contains(initialNumbers[0]));
 		assertFalse(numbers.contains(1000));
@@ -90,7 +91,7 @@ String initialStrings[] = {"name1", "name2"};
 		
 		
 	}
-	@Test
+	//@Test
 	void testContainsStrings() {
 		
 		
@@ -99,7 +100,7 @@ String initialStrings[] = {"name1", "name2"};
 		assertTrue(strings.contains(pattern));
 		assertTrue(strings.contains("Hello"));
 	}
-	@Test
+	//@Test
 	void testContainsPersons() {
 		Person prs = new Person(123, "Moshe");
 		Person prs2 = new Person(124, "Vasya");
@@ -110,7 +111,7 @@ String initialStrings[] = {"name1", "name2"};
 		assertTrue(persons.contains(prs));
 		assertFalse(persons.contains(new Person(125, "Olya")));
 	}
-	@Test
+	//@Test
 	void containsPredicateNumbersTest() {
 		Predicate<Integer> predicate100 = new GreaterNumberPredicate(100);
 		Predicate<Integer> predicate25 = new GreaterNumberPredicate(25);
@@ -118,7 +119,7 @@ String initialStrings[] = {"name1", "name2"};
 		assertTrue(numbers.contains(predicate25));
 		
 	}
-	@Test
+	//@Test
 	void containsPredicateStringsTest() {
 		Predicate<String> predicateName = new StartWithPredicate("name");
 		Predicate<String> predicateMain = new StartWithPredicate("main");
@@ -138,61 +139,107 @@ String initialStrings[] = {"name1", "name2"};
 		}
 		return res;
 	}
-	@Test
+	
+//	@Test
 	void indexOfTest() {
 		assertEquals(0, numbers.indexOf(10));
-		assertEquals(1, numbers.indexOf(20));
-		assertEquals(-1, numbers.indexOf(100));
 		assertEquals(2, numbers.indexOf(40));
+		assertEquals(-1, numbers.indexOf(100));
 	}
-	@Test
-	void lastindexOfTest() {
+	//@Test
+	void lastIndexOfTest() {
 		assertEquals(0, numbers.lastIndexOf(10));
-		assertEquals(1, numbers.lastIndexOf(20));
 		assertEquals(2, numbers.lastIndexOf(40));
 		assertEquals(-1, numbers.lastIndexOf(100));
 		numbers.add(10);
-		numbers.add(10);
-		assertEquals(4, numbers.lastIndexOf(10));
-
+		assertEquals(3, numbers.lastIndexOf(10));
+		
 	}
-	
 	@Test
 	void indexOfPredicate() {
-		assertEquals(0, numbers.indexOf(new GreaterNumberPredicate(5)));
-		assertEquals(1, numbers.indexOf(new GreaterNumberPredicate(10)));
 		assertEquals(2, numbers.indexOf(new GreaterNumberPredicate(25)));
-		assertEquals(-1, numbers.indexOf(100));
+		assertEquals(0, numbers.indexOf(new GreaterNumberPredicate(5)));
+		assertEquals(-1, numbers.indexOf(new GreaterNumberPredicate(45)));
 	}
 	@Test
-	void lastindexOfPredicate() {
-		assertEquals(2, numbers.lastIndexOf(new GreaterNumberPredicate(35)));
+	void lastIndexOfPredicate() {
+		assertEquals(2, numbers.lastIndexOf(new GreaterNumberPredicate(25)));
 		assertEquals(2, numbers.lastIndexOf(new GreaterNumberPredicate(5)));
-		assertEquals(2, numbers.lastIndexOf(new GreaterNumberPredicate(15)));
-		numbers.add(27);
-		numbers.add(10);
-		numbers.add(10);
-		assertEquals(3, numbers.lastIndexOf(new GreaterNumberPredicate(25)));
-		assertEquals(-1, numbers.lastIndexOf(100));
+		assertEquals(-1, numbers.lastIndexOf(new GreaterNumberPredicate(45)));
 	}
 	@Test
 	void removeIfTest() {
-		Integer expected1[] = {10, 20};
-		Integer expected2[] = {10};
-		Integer expected3[] = {};
-		Predicate<Integer> grater1= new GreaterNumberPredicate(22);
-		Predicate<Integer> grater2= new GreaterNumberPredicate(12);
-		Predicate<Integer> grater3= new GreaterNumberPredicate(5);
-		Predicate<Integer> grater4= new GreaterNumberPredicate(-1000);
-
-		assertTrue(numbers.removeIf(grater1));
-		assertFalse(numbers.removeIf(grater1));
-		assertArrayEquals(expected1, getArrayFromList(numbers));
-		assertTrue(numbers.removeIf(grater2));
-		assertArrayEquals(expected2, getArrayFromList(numbers));
-		assertTrue(numbers.removeIf(grater3));
-		assertArrayEquals(expected3, getArrayFromList(numbers));
-		assertFalse(numbers.removeIf(grater4));
-	
+		Integer expected[] = {10, 20};
+		Integer expectedEmpty[] = {};
+		Predicate<Integer> greater25 = new GreaterNumberPredicate(25);
+		assertTrue(numbers.removeIf(greater25));
+		assertFalse(numbers.removeIf(greater25));
+		assertArrayEquals(expected, getArrayFromList(numbers));
+		assertTrue(numbers.removeIf(new GreaterNumberPredicate(0)));
+		assertArrayEquals(expectedEmpty, getArrayFromList(numbers));
+		
+		
+		
 	}
-}
+	//@Test
+	void removeAllTest() {
+		numbers.add(20);
+		List<Integer> otherNumbers = new ArrayList<>();
+		otherNumbers.add(20);
+		otherNumbers.add(40);
+		assertTrue(numbers.removeAll(otherNumbers));
+		Integer expected[] = {10};
+		assertArrayEquals(expected, getArrayFromList(numbers));
+		assertFalse(numbers.removeAll(otherNumbers));
+	}
+	//@Test
+	void removeAllSame() {
+		assertTrue(numbers.removeAll(numbers));
+		assertArrayEquals(new Integer[0], getArrayFromList(numbers));
+	}
+	@Test 
+	void sortComparatorTest()
+	{
+		numbers.add(8);
+		numbers.add(3);
+		Integer Num[] = {40, 20, 10, 8, 3};
+		numbers.sort(new ComparatorNum());
+		assertArrayEquals(Num, getArrayFromList(numbers));
+		strings.add(0, "name3");
+		strings.add(2, "name4");
+		String Str[] = {"name4", "name3", "name2", "name1"};
+		strings.sort(new ComparatorString());
+		assertArrayEquals(Str, getArrayFromList(strings));
+		
+	}
+	@Test
+	void removePatternTest() {
+		Integer Num[] = {10, 20};
+		Integer removeNum = 15;
+		Integer removeNumber = numbers.remove(removeNum);
+		assertArrayEquals(Num, getArrayFromList(numbers));
+		assertEquals(removeNumber, removeNum);
+		removeNum = 100;
+		assertNull(numbers.remove(removeNum));
+
+	}
+	@Test
+	void retainTest() {
+		numbers.add(3);
+		numbers.add(20);
+		List<Integer> NumList = new ArrayList<>();
+		NumList.add(20);
+		NumList.add(10);
+		Integer Num[] = {10, 20, 30};
+		numbers.retainAll(NumList);
+		assertArrayEquals(Num, getArrayFromList(numbers));
+		strings.add("name1");
+		strings.add("name2");
+		List<String> StrList = new ArrayList<>();
+		StrList.add("name3");
+		StrList.add("name4");
+		strings.retainAll(StrList);
+		String expectedStr[] = {"name1", "name2"};
+		assertArrayEquals(expectedStr, getArrayFromList(strings));
+	}
+}//

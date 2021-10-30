@@ -1,4 +1,3 @@
-
 package telran.util;
 
 import java.util.Objects;
